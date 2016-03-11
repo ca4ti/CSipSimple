@@ -19,7 +19,9 @@
     You should have received a copy of the GNU General Public License
     along with CSipSimple.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="@dimen/call_answer_height"
+    android:layout_width="match_parent">
 
     <FrameLayout
         android:layout_width="0dip"
@@ -31,8 +33,7 @@
         <FrameLayout
             android:id="@+id/dontTakeCallButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/actionBarItemBackground" >
+            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/dontTakeCallButtonTxt"
@@ -55,8 +56,7 @@
         <FrameLayout
             android:id="@+id/takeCallButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/actionBarItemBackground" >
+            android:layout_height="match_parent" >
 
             <TextView
                 android:id="@+id/takeCallButtonTxt"

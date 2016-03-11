@@ -564,6 +564,47 @@
         <activity
             android:name="com.csipsimple.wizards.impl.MondotalkCreate"
             android:theme="@style/DarkTheme" />
+
+
+        <receiver
+            android:name="com.csipsimple.ui.incall.IncomingCallReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="csipsimple.broadcast.action.incoming_call" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name=".ui.incall.CallActivityWithFragment"
+            android:label="Call Activity"
+            android:theme="@style/AppTheme.Holo.Dialog"
+            android:screenOrientation="landscape"
+
+            android:allowTaskReparenting="true"
+            android:configChanges="orientation"
+            android:excludeFromRecents="true"
+            android:permission="android.permission.CONFIGURE_SIP"
+            android:taskAffinity="" >
+            <intent-filter android:priority="10" >
+                <action android:name="com.csipsimple.phone.action.INCALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.incall.CallActivity"
+            android:label="Call Activity"
+            android:theme="@style/AppTheme.Holo.Dialog"
+            android:screenOrientation="landscape"
+
+            android:allowTaskReparenting="true"
+            android:configChanges="orientation"
+            android:excludeFromRecents="true"
+            android:permission="android.permission.CONFIGURE_SIP"
+            android:taskAffinity="" >
+            <intent-filter android:priority="10" >
+                <action android:name="com.csipsimple.phone.action.INCALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
