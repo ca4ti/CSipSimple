@@ -27,6 +27,7 @@ package com.csipsimple.ui.incall.locker.buttons;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,11 +40,13 @@ import com.csipsimple.ui.incall.locker.IOnLeftRightChoice.IOnLeftRightProvider;
 import com.csipsimple.ui.incall.locker.IOnLeftRightChoice.TypeOfLock;
 import com.csipsimple.ui.incall.locker.LeftRightChooserUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class AlternateUnlocker extends LinearLayout implements IOnLeftRightProvider, OnClickListener {
 
-	private IOnLeftRightChoice onTriggerListener;
+    private static final String TAG = AlternateUnlocker.class.getSimpleName();
+    private IOnLeftRightChoice onTriggerListener;
 
     public AlternateUnlocker(Context context) {
 		this(context, null);
@@ -61,8 +64,11 @@ public class AlternateUnlocker extends LinearLayout implements IOnLeftRightProvi
 	    setOrientation(HORIZONTAL);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        inflater.inflate(R.layout.alternate_unlocker, this, true);
-        
+        try {
+            inflater.inflate(R.layout.alternate_unlocker, this, true);
+        } catch (Exception e){
+            Log.e(TAG, "Error while inflating. ", e);
+        }
         
         View btn;
         btn = findViewById(R.id.takeCallButton);

@@ -1012,11 +1012,16 @@ public class UAStateReceiver extends Callback {
             Context ctxt = pjService.service;
 
             // Launch activity to choose what to do with this call
-            Intent callHandlerIntent = SipService.buildCallUiIntent(ctxt, currentCallInfo2);
-            Log.d(THIS_FILE, "Anounce call activity, sending broadcast");
+            Intent intent = SipService.buildCallUiBlankIntent(ctxt, currentCallInfo2);
 
+            //Intent callHandlerIntent = SipService.buildCallUiIntent(ctxt, currentCallInfo2);
+            Log.d(THIS_FILE, "Anounce call activity, sending broadcast");
+            //Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+            intent.setAction(INCOMING_CALL_ACTION);
+            pjService.service.sendBroadcast(intent);
             //TODO: handle UI here
-            ctxt.startActivity(callHandlerIntent);
+            //ctxt.startActivity(callHandlerIntent);
             lastLaunchCallHandler = currentElapsedTime;
         } else {
             Log.d(THIS_FILE, "Ignore extra launch handler");

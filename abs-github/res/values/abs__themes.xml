@@ -11,7 +11,7 @@
 
         <!-- Action bar styles (from Theme.Holo) -->
         <item name="actionDropDownStyle">@style/Widget.Sherlock.Spinner.DropDown.ActionBar</item>
-        <item name="actionButtonStyle">@style/Widget.Sherlock.ActionButton</item>
+        <item name="actionButtonStyle">@style/android:Widget.Holo.ActionButton</item>
         <item name="actionOverflowButtonStyle">@style/Widget.Sherlock.ActionButton.Overflow</item>
         <item name="actionModeBackground">@drawable/abs__cab_background_top_holo_dark</item>
         <item name="actionModeSplitBackground">@drawable/abs__cab_background_bottom_holo_dark</item>

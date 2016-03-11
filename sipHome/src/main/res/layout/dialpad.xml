@@ -30,20 +30,20 @@
 
         <ImageButton
             android:id="@+id/button1"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_one"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_1" />
 
         <ImageButton
             android:id="@+id/button2"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_two"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_2" />
 
         <ImageButton
             android:id="@+id/button3"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_three"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_3" />
     </TableRow>
 
@@ -54,20 +54,20 @@
 
         <ImageButton
             android:id="@+id/button4"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_four"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_4" />
 
         <ImageButton
             android:id="@+id/button5"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_five"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_5" />
 
         <ImageButton
             android:id="@+id/button6"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_six"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_6" />
     </TableRow>
 
@@ -78,20 +78,20 @@
 
         <ImageButton
             android:id="@+id/button7"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_seven"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_7" />
 
         <ImageButton
             android:id="@+id/button8"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_eight"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_8" />
 
         <ImageButton
             android:id="@+id/button9"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_nine"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_9" />
     </TableRow>
 
@@ -102,14 +102,14 @@
 
         <ImageButton
             android:id="@+id/buttonstar"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_star"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_star" />
 
         <ImageButton
             android:id="@+id/button0"
-            style="@style/DialtactsDialpadButtonStyle"
             android:contentDescription="@string/description_image_button_zero"
+            style="@style/DialtactsDialpadButtonStyle"
             android:src="@drawable/dial_num_0" />
 
         <ImageButton
