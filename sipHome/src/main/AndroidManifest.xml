@@ -611,12 +611,15 @@
         <service
             android:name=".api.MakeCallService"
             android:exported="true"/>
+        <service
+            android:name=".api.SendMessageService"
+            android:exported="true"/>
 
         <receiver
             android:name=".api.ApiRequestReceiver"
             android:exported="true" >
             <intent-filter>
-                <action android:name="csipsimple.broadcast.action.call_request" />
+                <action android:name="csipsimple.broadcast.action.api_request.action" />
             </intent-filter>
         </receiver>
     </application>

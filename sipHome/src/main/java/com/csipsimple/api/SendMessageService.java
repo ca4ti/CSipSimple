@@ -21,9 +21,9 @@ import eu.miraculouslife.android.csipsimple.apilib.ApiConstants;
 /**
  * Created by kadyrovs on 04.02.2016.
  */
-public class MakeCallService extends IntentService {
+public class SendMessageService extends IntentService {
 
-    private static final String TAG = MakeCallService.class.getSimpleName();
+    private static final String TAG = SendMessageService.class.getSimpleName();
 
 
     private Long sipAccountId = SipProfile.INVALID_ID;
@@ -31,10 +31,10 @@ public class MakeCallService extends IntentService {
     private ISipService service;
 
     private String number;
-    public static String CALLEE_NAME;
+    private String message;
 
-    public MakeCallService() {
-        super(MakeCallService.class.getName());
+    public SendMessageService() {
+        super(SendMessageService.class.getName());
     }
 
     @Override
@@ -42,23 +42,32 @@ public class MakeCallService extends IntentService {
 
         Log.d(TAG, "onHandleIntent");
 
-        CALLEE_NAME = intent.getStringExtra(ApiConstants.TO_CALL_NAME_INTENT_KEY);
-        Log.i(TAG, "calleeName: " + CALLEE_NAME);
+        message = intent.getStringExtra(ApiConstants.MESSAGE_INTENT_KEY);
+        number = intent.getStringExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY);
+        if(TextUtils.isEmpty(message)){
+            Log.e(TAG, "Message body empty! Not sending anything.");
+            return;
+        }
+
+        if (TextUtils.isEmpty(number)) {
+            Log.e(TAG, "Target number is null or empty, cannot send a message");
+            return;
+        }
+
+        Log.i(TAG, "sending message: " + message);
+        Log.i(TAG, "to number: " + number);
+
         number = intent.getStringExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY);
 
-        if (!TextUtils.isEmpty(number)) {
             try {
                 bindSipService();
 
-                Log.d(TAG, MakeCallService.class.getCanonicalName() + " Stopping!");
+                Log.d(TAG, SendMessageService.class.getCanonicalName() + " Stopping!");
                 unbindService(connection);
                 this.stopSelf();
             } catch (Exception e) {
-                Log.e(TAG, "Exception while starting makeCall", e);
+                Log.e(TAG, "Exception while sending a message. ", e);
             }
-        } else {
-            Log.e(TAG, "To call number is null or empty, not making a call");
-        }
     }
 
     private String rewriteNumber(String number) {
@@ -88,7 +97,7 @@ public class MakeCallService extends IntentService {
         public void onServiceConnected(ComponentName arg0, IBinder arg1) {
             service = ISipService.Stub.asInterface(arg1);
             Log.i(TAG, "service connected!");
-            makeCall(number);
+            sendMessage(number, message);
         }
 
         @Override
@@ -149,9 +158,15 @@ public class MakeCallService extends IntentService {
         }
     }
 
-
-    public void makeCall(String number) {
-        Log.i(TAG, "makeCall, number: " + number);
+    /**
+     * Send a message to the given number (plain number, without host parameters)
+     * Host and other parameters are prepared in this method
+     * @param number
+     * @param message
+     */
+    public void sendMessage(String number, String message) {
+        Log.i(TAG, "sendMessage, number: " + number);
+        Log.i(TAG, "sendMessage, message: " + message);
         if (service == null) {
             Log.e(TAG, "service null");
             return;
@@ -171,16 +186,18 @@ public class MakeCallService extends IntentService {
         }
 
         number = rewriteNumber(PhoneNumberUtils.stripSeparators(number));
-
+        //number = prepareMessageTargetNumber(number);
         if (TextUtils.isEmpty(number)) {
             Log.e(TAG, "target number empty");
             return;
         }
 
+        Log.e(TAG, "toNumber prepared: " + number);
+
         // make the call
         if (sipAccountId >= 0) {
             try {
-                service.makeCallWithOptions(number, sipAccountId.intValue(), null);
+                service.sendMessage(message, number, sipAccountId);
             } catch (RemoteException e) {
                 Log.e(TAG, "Service can't be called to make the call");
                 com.csipsimple.utils.Log.e(TAG, "Service can't be called to make the call");

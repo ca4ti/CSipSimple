@@ -71,6 +71,7 @@ import com.csipsimple.widgets.AccountChooserButton;
 
 public class MessageFragment extends SherlockListFragment implements LoaderManager.LoaderCallbacks<Cursor>, OnClickListener {
     private static final String THIS_FILE = "ComposeMessage";
+    private static final String TAG = MessageFragment.class.getSimpleName();
     private String remoteFrom;
     private TextView fromText;
     private TextView fullFromText;
@@ -266,12 +267,16 @@ public class MessageFragment extends SherlockListFragment implements LoaderManag
     }
 
     private void sendMessage() {
+        Log.i(TAG, "sendMessage");
         if (service != null) {
             SipProfile acc = accountChooserButton.getSelectedAccount();
             if (acc != null && acc.id != SipProfile.INVALID_ID) {
                 try {
                     String textToSend = bodyInput.getText().toString();
                     if(!TextUtils.isEmpty(textToSend)) {
+                        Log.d(TAG, "textToSend: " + textToSend);
+                        Log.d(TAG, "remoteFrom: " + remoteFrom);
+                        Log.d(TAG, "accountId: " + acc.id);
                         service.sendMessage(textToSend, remoteFrom, (int) acc.id);
                         bodyInput.getText().clear();
                     }

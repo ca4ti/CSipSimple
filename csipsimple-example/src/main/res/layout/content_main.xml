@@ -11,15 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:weightSum="2"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.project.callrequestproject.MainActivity"
+    tools:context="com.example.project.csipsimple_example.MainActivity"
     tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="17sp"
-        android:text="Make a call" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -29,7 +22,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:ems="17"
-        android:layout_weight="0.6"
+        android:layout_weight="0.3"
         android:id="@+id/name" />
 
     <EditText
@@ -40,6 +33,17 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:ems="17"
-        android:layout_weight="0.6"
+        android:layout_weight="0.3"
         android:id="@+id/number" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="message"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:ems="17"
+        android:layout_weight="0.4"
+        android:id="@+id/message" />
 </LinearLayout>

@@ -33,6 +33,11 @@ public class ApiRequestReceiver extends BroadcastReceiver {
         } else if(requestType == ApiConstants.REQUEST_TYPE_OPEN_SETTINGS_PAGE){
             Log.i(TAG, "received request for making call");
             context.startActivity(new Intent(context, AccountsEditList.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } else if(requestType == ApiConstants.REQUEST_TYPE_SEND_MESSAGE){
+            Log.i(TAG, "received request for sending a message");
+            Intent serviceIntent = new Intent(Intent.ACTION_SYNC, null, context, SendMessageService.class);
+            serviceIntent.putExtras(intent);
+            context.startService(serviceIntent);
         } else {
             Log.e(TAG, "Unknown requestType: " + " . Make sure the request type is correct.");
         }

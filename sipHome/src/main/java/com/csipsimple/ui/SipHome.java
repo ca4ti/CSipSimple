@@ -446,9 +446,7 @@ public class SipHome extends SherlockFragmentActivity implements OnWarningChange
                 mWarningFragment.setWarningList(warningList);
                 mWarningFragment.setOnWarningChangedListener(this);
             }
-            
         }
-
     }
 
 
