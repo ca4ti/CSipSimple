@@ -76,6 +76,8 @@ public class PrefsFast extends SherlockActivity implements OnClickListener {
 		findViewById(R.id.row_glob_tg).setOnClickListener(this);
 		
 		updateFromPrefs();
+
+		saveBtn.performClick();
 	}
 	
 

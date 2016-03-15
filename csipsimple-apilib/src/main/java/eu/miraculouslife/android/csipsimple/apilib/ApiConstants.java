@@ -7,8 +7,7 @@ public class ApiConstants {
     public static final String TO_CALL_NUMBER_INTENT_KEY = "to.call.number.intent.key";
     public static final String TO_CALL_NAME_INTENT_KEY = "to.call.name.intent.key";
 
-
-    public static final String CALL_REQUEST_ACTION = "csipsimple.broadcast.action.call_request";
+    public static final String API_REQUEST_ACTION = "csipsimple.broadcast.action.api_request.action";
 
     public static final String REQUEST_TYPE_INTENT_KEY = "csipsimple.api.request_type";
     public static final int REQUEST_TYPE_MAKE_CALL = 100;

@@ -37,7 +37,6 @@ public class AccountsEditList extends SherlockFragmentActivity {
 
 		setContentView(R.layout.accounts_view);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		Toast.makeText(getApplicationContext(), "onCreate", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

@@ -194,13 +194,14 @@ public class SipHome extends SherlockFragmentActivity implements OnWarningChange
         
 
         // Async check
+        /*
         asyncSanityChecker = new Thread() {
             public void run() {
                 asyncSanityCheck();
             };
         };
         asyncSanityChecker.start();
-        
+        */
     }
 
     /**
@@ -452,6 +453,7 @@ public class SipHome extends SherlockFragmentActivity implements OnWarningChange
 
 
     private void asyncSanityCheck() {
+        Toast.makeText(getApplicationContext(), "Checking nightly build updates", Toast.LENGTH_SHORT).show();
         // if(Compatibility.isCompatible(9)) {
         // // We check now if something is wrong with the gingerbread dialer
         // integration
@@ -779,9 +781,13 @@ public class SipHome extends SherlockFragmentActivity implements OnWarningChange
                     .setAlphabeticShortcut('a')
                     .setShowAsAction( accountRoom );
         }
+        int accountRoom = actionRoom;
+        if(Compatibility.isCompatible(13)) {
+            accountRoom |= MenuItem.SHOW_AS_ACTION_WITH_TEXT;
+        }
         menu.add(Menu.NONE, PARAMS_MENU, Menu.NONE, R.string.prefs)
                 .setIcon(android.R.drawable.ic_menu_preferences)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                .setShowAsAction(accountRoom);
 
         menu.add(Menu.NONE, HELP_MENU, Menu.NONE, R.string.help)
                 .setIcon(android.R.drawable.ic_menu_help)

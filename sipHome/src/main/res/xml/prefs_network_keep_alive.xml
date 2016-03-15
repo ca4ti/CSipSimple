@@ -20,39 +20,39 @@
     <!-- About keep alives -->
     <!-- UDP -->
     <EditTextPreference
-        android:defaultValue="100"
+        android:defaultValue="30"
         android:key="keep_alive_interval_wifi"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
         android:title="@string/udp_keep_alive_interval_wifi" />
     <EditTextPreference
-        android:defaultValue="40"
+        android:defaultValue="30"
         android:key="keep_alive_interval_mobile"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
         android:title="@string/udp_keep_alive_interval_mobile" />
     <!-- TCP -->
     <EditTextPreference
-        android:defaultValue="180"
+        android:defaultValue="30"
         android:key="tcp_keep_alive_interval_wifi"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
         android:title="@string/tcp_keep_alive_interval_wifi" />
     <EditTextPreference
-        android:defaultValue="120"
+        android:defaultValue="30"
         android:key="tcp_keep_alive_interval_mobile"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
         android:title="@string/tcp_keep_alive_interval_mobile" />
     <!-- TLS -->
     <EditTextPreference
-        android:defaultValue="180"
+        android:defaultValue="30"
         android:key="tls_keep_alive_interval_wifi"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
         android:title="@string/tls_keep_alive_interval_wifi" />
     <EditTextPreference
-        android:defaultValue="120"
+        android:defaultValue="30"
         android:key="tls_keep_alive_interval_mobile"
         android:numeric="signed"
         android:summary="@string/keep_alive_interval_desc"
