@@ -19,7 +19,7 @@ import eu.miraculouslife.android.csipsimple.apilib.ApiConstants;
 
 
 /**
- * Created by kadyrovs on 04.02.2016.
+ * Created by kadyrovs on 14.03.2016.
  */
 public class SendMessageService extends IntentService {
 
@@ -63,7 +63,7 @@ public class SendMessageService extends IntentService {
                 bindSipService();
 
                 Log.d(TAG, SendMessageService.class.getCanonicalName() + " Stopping!");
-                unbindService(connection);
+                //unbindService(connection);
                 this.stopSelf();
             } catch (Exception e) {
                 Log.e(TAG, "Exception while sending a message. ", e);

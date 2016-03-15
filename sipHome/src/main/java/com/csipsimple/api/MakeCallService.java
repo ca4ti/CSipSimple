@@ -51,7 +51,7 @@ public class MakeCallService extends IntentService {
                 bindSipService();
 
                 Log.d(TAG, MakeCallService.class.getCanonicalName() + " Stopping!");
-                unbindService(connection);
+                //unbindService(connection);
                 this.stopSelf();
             } catch (Exception e) {
                 Log.e(TAG, "Exception while starting makeCall", e);

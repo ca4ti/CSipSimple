@@ -54,6 +54,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.csipsimple.R;
 import com.csipsimple.api.ISipService;
@@ -552,6 +553,11 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                         }
                         break;
                     case SipCallSession.InvState.CONFIRMED:
+                        Log.i(TAG, "SipCallSession.InvState.CONFIRMED - (Call connected)");
+                        Log.i(TAG, "remoteContact: " + mainCallInfo.getRemoteContact());
+                        Log.w(TAG, "is incoming: " + mainCallInfo.isIncoming());
+                        sendCallConnectedBroadcast(mainCallInfo.isIncoming(), mainCallInfo.getRemoteContact());
+
                         break;
                     case SipCallSession.InvState.NULL:
                     case SipCallSession.InvState.DISCONNECTED:
@@ -575,12 +581,24 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
         }
     }
 
+    private void sendCallConnectedBroadcast(boolean isIncoming, String calleeContact){
+        Log.i(TAG, "sendCallConnectedBroadcast");
+        MakeCallService.CALLEE_NAME = "";
+        Intent intent = new Intent();
+        intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_CONNECTED);
+        intent.putExtra(ApiConstants.IS_CALL_INCOMING_INTENT_KEY, isIncoming);
+        intent.putExtra(ApiConstants.CALL_CONNECTED_CALLEE_INTENT_KEY, calleeContact);
+        intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
+        sendBroadcast(intent);
+    }
+
     private void sendEndCallBroadcast(){
         Log.i(TAG, "sendEndCallBroadcast");
         MakeCallService.CALLEE_NAME = "";
         Intent intent = new Intent();
+        intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_ENDED);
         intent.putExtra(ApiConstants.CALL_ENDED_STATUS_INTENT_KEY, true);
-        intent.setAction(ApiConstants.CALL_ENDED_BROADCAST_ACTION);
+        intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
         sendBroadcast(intent);
     }
 

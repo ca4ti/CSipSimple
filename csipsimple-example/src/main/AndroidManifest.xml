@@ -19,10 +19,10 @@
         </activity>
 
         <receiver
-            android:name=".CallEndedStatusReceiver"
+            android:name=".ApiResponseReceiver"
             android:exported="true" >
             <intent-filter>
-                <action android:name="csipsimple.broadcast.action.call_ended_status" />
+                <action android:name="csipsimple.broadcast.action.api_response" />
             </intent-filter>
         </receiver>
     </application>
