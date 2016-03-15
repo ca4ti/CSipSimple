@@ -58,6 +58,7 @@ import java.util.ArrayList;
 
 public class SipNotifications {
 
+	private static final String TAG = SipNotifications.class.getSimpleName();
 	private final NotificationManager notificationManager;
 	private final Context context;
 	private Builder inCallNotification;
@@ -265,7 +266,6 @@ public class SipNotifications {
 	
 	/**
 	 * Format the remote contact name for the call info
-	 * @param callInfo the callinfo to format
 	 * @return the name to display for the contact
 	 */
 	private String formatRemoteContactString(String remoteContact) {
@@ -287,7 +287,6 @@ public class SipNotifications {
 	/**
 	 * Format the notification title for a call info
 	 * @param title
-	 * @param callInfo
 	 * @return
 	 */
 	private String formatNotificationTitle(int title, long accId) {
@@ -303,6 +302,7 @@ public class SipNotifications {
 
 	// Calls
 	public void showNotificationForCall(SipCallSession callInfo) {
+		Log.i(TAG, "showNotificationForCall");
 		// This is the pending call notification
 		// int icon = R.drawable.ic_incall_ongoing;
 		@SuppressWarnings("deprecation")

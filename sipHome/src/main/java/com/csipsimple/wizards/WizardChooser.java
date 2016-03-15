@@ -24,6 +24,7 @@ package com.csipsimple.wizards;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WizardChooser extends SherlockExpandableListActivity {
+	private static final String TAG = WizardChooser.class.getSimpleName();
 	private ArrayList<ArrayList<Map<String, Object>>> childDatas;
 
 	// private static final String THIS_FILE = "SIP ADD ACC W";
@@ -51,10 +53,13 @@ public class WizardChooser extends SherlockExpandableListActivity {
 		setContentView(R.layout.add_account_wizard);
 
 		Context context = getApplicationContext();
-		
+
 		// Now build the list adapter
 		childDatas = WizardUtils.getWizardsGroupedList();
-		
+
+		Log.i(TAG, "childData: " + childDatas);
+		Log.i(TAG, "wizard groups: " + WizardUtils.getWizardsGroups(context));
+
 		WizardsListAdapter adapter = new WizardsListAdapter(
 				this,
 				// Groups
@@ -66,8 +71,8 @@ public class WizardChooser extends SherlockExpandableListActivity {
                 childDatas,
 				R.layout.wizard_row,
 				new String[] { WizardUtils.LABEL }, new int[] { android.R.id.text1 } );
-		
-		
+
+
 		setListAdapter(adapter);
 
 		Button cancelBt = (Button) findViewById(R.id.cancel_bt);
@@ -77,15 +82,29 @@ public class WizardChooser extends SherlockExpandableListActivity {
 				finish();
 			}
 		});
-		
+
 		if(childDatas.size() >= 1) {
 		    getExpandableListView().expandGroup(0);
 		}
 		if(childDatas.size() >= 2) {
 		    getExpandableListView().expandGroup(1);
 		}
+
+		//performOnBasicClick();
 	}
-	
+
+	private void performOnBasicClick() {
+		Log.i(TAG, "performOnBasicClick");
+		Map<String, Object> data = childDatas.get(0).get(0);
+		String wizard_id = (String) data.get(WizardUtils.ID);
+		Log.d(TAG, "wizardId: " + wizard_id);
+		Intent result = getIntent();
+		result.putExtra(WizardUtils.ID, wizard_id);
+
+		setResult(RESULT_OK, result);
+		finish();
+	}
+
 	@Override
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		Map<String, Object> data = childDatas.get(groupPosition).get(childPosition);

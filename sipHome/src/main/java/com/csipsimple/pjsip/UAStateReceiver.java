@@ -191,6 +191,7 @@ public class UAStateReceiver extends Callback {
             }
             if (shouldAutoAnswer < 300) {
                 // Or by api
+                Log.i(TAG, "shouldAutoAnswer<300");
                 launchCallHandler(callInfo);
                 Log.d(THIS_FILE, "Incoming call >>");
             }
@@ -727,6 +728,7 @@ public class UAStateReceiver extends Callback {
         }
 
         public void handleMessage(Message msg) {
+            Log.i(TAG, "handleMessage");
             UAStateReceiver stateReceiver = sr.get();
             if (stateReceiver == null) {
                 return;
@@ -739,15 +741,20 @@ public class UAStateReceiver extends Callback {
 
                     switch (callState) {
                         case SipCallSession.InvState.INCOMING:
+                            Log.i(TAG, "INCOMING");
                         case SipCallSession.InvState.CALLING:
+                            Log.i(TAG, "CALLING");
                             stateReceiver.notificationManager.showNotificationForCall(callInfo);
                             stateReceiver.launchCallHandler(callInfo);
                             stateReceiver.broadCastAndroidCallState("RINGING",
                                     callInfo.getRemoteContact());
                             break;
                         case SipCallSession.InvState.EARLY:
+                            Log.i(TAG, "EARLY");
                         case SipCallSession.InvState.CONNECTING:
+                            Log.i(TAG, "CONNECTING");
                         case SipCallSession.InvState.CONFIRMED:
+                            Log.i(TAG, "CONFIRMED");
                             // As per issue #857 we should re-ensure
                             // notification + callHandler at each state
                             // cause we can miss some states due to the fact
@@ -1003,6 +1010,7 @@ public class UAStateReceiver extends Callback {
      *            call handler activity
      */
     private synchronized void launchCallHandler(SipCallSession currentCallInfo2) {
+        Log.i(TAG, "launchCallHandler");
         long currentElapsedTime = SystemClock.elapsedRealtime();
         // Synchronized ensure we do not get this launched several time
         // We also ensure that a minimum delay has been consumed so that we do

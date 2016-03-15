@@ -45,6 +45,8 @@ import org.pjsip.pjsua.zrtp_state_info;
  */
 public final class PjSipCalls {
 
+    private static final String TAG = PjSipCalls.class.getSimpleName();
+
     private PjSipCalls() {
     }
 
@@ -55,7 +57,6 @@ public final class PjSipCalls {
      * 
      * @param session The session to update (input/output). Must have a correct
      *            call id set
-     * @param service PjSipService Sip service to retrieve pjsip accounts infos
      * @throws SameThreadException
      */
     public static void updateSessionFromPj(SipCallSessionImpl session, pjsip_event e, Context context)
@@ -124,8 +125,9 @@ public final class PjSipCalls {
      * @param pjCallInfo the call info from pjsip
      * @param service PjSipService Sip service to retrieve pjsip accounts infos
      */
-    private static void updateSession(SipCallSessionImpl session, pjsua_call_info pjCallInfo,
-            Context context) {
+    private static void updateSession(SipCallSessionImpl session, pjsua_call_info pjCallInfo, Context context) {
+        Log.i(TAG, "updateSession");
+
         // Should be unecessary cause we usually copy infos from a valid
         session.setCallId(pjCallInfo.getId());
 

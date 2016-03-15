@@ -23,8 +23,10 @@
     <color name="account_unregistered">#FFFFC200</color>
     <color name="account_valid">#FF84E300</color>
     <color name="account_error">#FFFF0F00</color>
-	<color name="dialer_grey">#3E3E3E</color>
+	<color name="dialer_grey">#008BC7</color>
+	<!--color name="dialer_grey">#3E3E3E</color-->
 	<color name="transparent">#00464646</color>
-	<color name="black">#000000</color>
+	<color name="black">#151A22</color>
+	<color name="in_call_card_bg">#25282D</color>
 
 </resources>

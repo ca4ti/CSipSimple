@@ -605,6 +605,20 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+
+        <!-- handles making calls -->
+        <service
+            android:name=".api.MakeCallService"
+            android:exported="true"/>
+
+        <receiver
+            android:name=".api.ApiRequestReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="csipsimple.broadcast.action.call_request" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

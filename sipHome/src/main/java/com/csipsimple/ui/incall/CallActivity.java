@@ -57,6 +57,7 @@ import android.widget.RelativeLayout;
 
 import com.csipsimple.R;
 import com.csipsimple.api.ISipService;
+import com.csipsimple.api.MakeCallService;
 import com.csipsimple.api.MediaState;
 import com.csipsimple.api.SipCallSession;
 import com.csipsimple.api.SipCallSession.StatusCode;
@@ -83,12 +84,13 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import eu.miraculouslife.android.csipsimple.apilib.ApiConstants;
+
 public class CallActivity extends FragmentActivity implements IOnCallActionTrigger,
         IOnLeftRightChoice, ProximityDirector, OnDtmfListener {
     private static final int QUIT_DELAY = 3000;
     private final static String TAG = CallActivity.class.getSimpleName();
     //private final static int DRAGGING_DELAY = 150;
-
 
     private Object callMutex = new Object();
     private SipCallSession[] callsInfo = null;
@@ -135,6 +137,8 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
     private final static int PICKUP_SIP_URI_NEW_CALL = 1;
     private static final String CALL_ID = "call_id";
 
+    private String targetName = "";
+
 
     @SuppressWarnings("deprecation")
     @Override
@@ -145,6 +149,11 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         this.setFinishOnTouchOutside(false);
         setContentView(R.layout.call_dialog);
+
+        targetName = getIntent().getStringExtra(SipManager.CALLEE_NAME_INTENT_KEY);
+        if(targetName != null) {
+            Log.i(TAG, "targetName: " + targetName);
+        }
 
         SipCallSession initialSession = getIntent().getParcelableExtra(SipManager.EXTRA_CALL_INFO);
         synchronized (callMutex) {
@@ -275,6 +284,8 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        sendEndCallBroadcast();
 
         if(infoDialog != null) {
             infoDialog.dismiss();
@@ -545,6 +556,7 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                     case SipCallSession.InvState.NULL:
                     case SipCallSession.InvState.DISCONNECTED:
                         Log.d(TAG, "Active call session is disconnected or null wait for quit...");
+
                         // This will release locks
                         onDisplayVideo(false);
                         delayedQuit();
@@ -561,6 +573,15 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                 delayedQuit();
             }
         }
+    }
+
+    private void sendEndCallBroadcast(){
+        Log.i(TAG, "sendEndCallBroadcast");
+        MakeCallService.CALLEE_NAME = "";
+        Intent intent = new Intent();
+        intent.putExtra(ApiConstants.CALL_ENDED_STATUS_INTENT_KEY, true);
+        intent.setAction(ApiConstants.CALL_ENDED_BROADCAST_ACTION);
+        sendBroadcast(intent);
     }
 
     @Override
@@ -1517,7 +1538,11 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
-                convertView = new InCallCard(CallActivity.this, null);
+                if(targetName != null && !targetName.isEmpty()){
+                    convertView = new InCallCard(CallActivity.this, null, targetName);
+                } else {
+                    convertView = new InCallCard(CallActivity.this, null);
+                }
             }
             
             if(convertView instanceof InCallCard) {
@@ -1527,7 +1552,11 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                 //badge.setOnTouchListener(new OnBadgeTouchListener(badge, call));
                 
                 SipCallSession session = (SipCallSession) getItem(position);
-                vc.setCallState(session);
+                if(targetName != null && !targetName.isEmpty()){
+                    vc.setCallState(session, targetName);
+                } else {
+                    vc.setCallState(session);
+                }
             }
 
             return convertView;

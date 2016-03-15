@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 public class Basic extends BaseImplementation {
 	protected static final String THIS_FILE = "Basic W";
+	private static final String TAG = Basic.class.getSimpleName();
 
 	private EditTextPreference etAccountDisplayName;
 	private EditTextPreference etAccountUserName;
@@ -107,7 +108,7 @@ public class Basic extends BaseImplementation {
 	public SipProfile buildAccount(SipProfile account) {
 		Log.d(THIS_FILE, "begin of save ....");
 		account.display_name = etAccountDisplayName.getText().trim();
-		
+
 		String[] serverParts = etAccountServer.getText().split(":");
 		account.acc_id = "<sip:" + SipUri.encodeUser(etAccountUserName.getText().trim()) + "@"+serverParts[0].trim()+">";
 		
@@ -115,9 +116,9 @@ public class Basic extends BaseImplementation {
 		account.reg_uri = regUri;
 		account.proxies = new String[] { regUri } ;
 
-
 		account.realm = "*";
 		account.username = getText(etAccountUserName).trim();
+		Log.d(TAG, "username: " + account.username);
 		account.data = getText(etAccountPassword);
 		account.scheme = SipProfile.CRED_SCHEME_DIGEST;
 		account.datatype = SipProfile.CRED_DATA_PLAIN_PASSWD;

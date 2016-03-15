@@ -4,15 +4,15 @@
     android:id="@+id/call_card_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A1A1A"
-    android:padding="2dip"
+    android:background="@color/in_call_card_bg"
+    android:padding="3dip"
     tools:ignore="Overdraw">
 
     <RelativeLayout
         android:id="@+id/contact_name_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1A1A1A"
+        android:background="@color/in_call_card_bg"
         android:gravity="center_vertical">
 
         <com.csipsimple.widgets.MarqueeTextView
@@ -77,10 +77,9 @@
     <LinearLayout
         android:id="@+id/call_action_bar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:layout_above="@+id/end_call_bar"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginBottom="20dip"
         android:gravity="center"
         android:background="@color/black"
         android:orientation="horizontal">
@@ -115,7 +114,6 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:src="@drawable/ic_mute_holo_dark" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -125,12 +123,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/end_call_background"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/endButton"
-            style="?attr/actionButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/call_answer_height"
             android:background="@drawable/end_call_background"
