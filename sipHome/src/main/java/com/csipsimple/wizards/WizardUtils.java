@@ -1299,18 +1299,20 @@ public class WizardUtils {
 		HashMap<String, String> m;
 		
 		//Local
+		/*
 		if(hasLocal) {
     		m = new HashMap<String, String>();
     		m.put(LANG_DISPLAY, Locale.getDefault().getDisplayCountry());
     		wizardGroups.add(m);
 		}
+		*/
 		//Generic
 		if(hasGeneric) {
     		m = new HashMap<String, String>();
     		m.put(LANG_DISPLAY, context.getString(R.string.generic_wizards_text));
     		wizardGroups.add(m);
 		}
-		
+		/*
 		if(hasWorld) {
 			//World
 			m = new HashMap<String, String>();
@@ -1323,6 +1325,7 @@ public class WizardUtils {
 			m.put(LANG_DISPLAY, context.getString(R.string.other_country_providers_text));
 			wizardGroups.add(m);
 		}
+		*/
 		
 		return wizardGroups;
 	}
@@ -1337,7 +1340,7 @@ public class WizardUtils {
 		Set<Entry<String, WizardInfo>> wizards = getWizardsList().entrySet();
 		for( Entry<String, WizardInfo> wizard : wizards) {
 			boolean found = false;
-			
+
 			for (Locale country : wizard.getValue().countries) {
 				if(country != null) {
 					if(country.getCountry().equals(Locale.getDefault().getCountry())) {
@@ -1353,6 +1356,7 @@ public class WizardUtils {
 					}
 				}
 			}
+
 			if(!found) {
 				if(wizard.getValue().isGeneric) {
 					generic_list.add(wizardInfoToMap(wizard.getValue(), true));
@@ -1374,18 +1378,22 @@ public class WizardUtils {
 		Collections.sort(others_list, comparator);
 		
 		ArrayList<ArrayList<Map<String, Object>>> result = new ArrayList<ArrayList<Map<String,Object>>>();
+		/*
 		if(locale_list.size() > 0) {
 		    result.add(locale_list);
 		}
+		*/
 		if(generic_list.size() > 0) {
 		    result.add(generic_list);
 		}
+		/*
 		if(world_list.size() > 0) {
 		    result.add(world_list);
 		}
 		if(others_list.size() > 0) {
 		    result.add(others_list);
 		}
+		*/
 		return result;
 	}
 

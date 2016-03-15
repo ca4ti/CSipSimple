@@ -82,6 +82,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="csipsimple-apilib" exported="" />
     <orderEntry type="module" module-name="abs-github" exported="" />
   </component>
 </module>

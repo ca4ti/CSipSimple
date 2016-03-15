@@ -48,5 +48,4 @@ public class AccountsEditList extends SherlockFragmentActivity {
 		}
 		return false;
 	}
-
 }

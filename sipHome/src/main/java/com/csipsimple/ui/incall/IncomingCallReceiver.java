@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.csipsimple.api.SipManager;
+
 /**
  * Receiver that listens to broadcast events for starting call UI
  */
@@ -35,6 +37,7 @@ public class IncomingCallReceiver extends BroadcastReceiver {
 
         //Intent intent1 = new Intent(context, CallActivityWithFragment.class);
         Intent intent1 = new Intent(context, CallActivity.class);
+        //intent1.putExtra(SipManager.CALLEE_NAME_INTENT_KEY, "Max Musterman");
         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent1.putExtras(intent);
         context.startActivity(intent1);

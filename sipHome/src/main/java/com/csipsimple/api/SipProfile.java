@@ -1623,6 +1623,7 @@ public class SipProfile implements Parcelable {
      * @return the caller id for this account
      */
     public String getDisplayName() {
+        Log.i(TAG, "getDisplayName");
         if (acc_id != null) {
             ParsedSipContactInfos parsed = SipUri.parseSipContact(acc_id);
             if (parsed.displayName != null) {
@@ -1648,6 +1649,7 @@ public class SipProfile implements Parcelable {
      * @return the display name for this profile
      */
     public String getProfileName() {
+        Log.i(TAG, "getProfileName");
         return display_name;
     }
 
@@ -1680,6 +1682,7 @@ public class SipProfile implements Parcelable {
      * Gets the SIP URI string of this profile.
      */
     public String getUriString() {
+        Log.i(TAG, "getUriString");
         return acc_id;
     }
 
@@ -1693,6 +1696,7 @@ public class SipProfile implements Parcelable {
      *         will return user.
      */
     public String getSipUserName() {
+        Log.i(TAG, "getSipUserName");
         ParsedSipContactInfos parsed = SipUri.parseSipContact(acc_id);
         if (parsed.userName != null) {
             return parsed.userName;
@@ -1701,6 +1705,7 @@ public class SipProfile implements Parcelable {
     }
     
     public ParsedSipContactInfos formatCalleeNumber(String fuzzyNumber) {
+        Log.i(TAG, "formatCalleeNumber");
         ParsedSipContactInfos finalCallee = SipUri.parseSipContact(fuzzyNumber);
 
         if (TextUtils.isEmpty(finalCallee.domain)) {

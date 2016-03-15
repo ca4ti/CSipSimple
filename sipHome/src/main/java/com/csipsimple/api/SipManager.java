@@ -492,6 +492,7 @@ public final class SipManager {
      * Constant for network errors return
      */
     public static final int ERROR_CURRENT_NETWORK = 10;
+    public static final String CALLEE_NAME_INTENT_KEY = "calleename_intent_key";
 
     /**
      * Possible presence status.

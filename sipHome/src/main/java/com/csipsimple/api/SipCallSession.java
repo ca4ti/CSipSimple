@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.util.Log;
 
 /**
  * Represents state of a call session<br/>
@@ -35,6 +36,8 @@ import android.os.SystemClock;
  * only a structured holder for datas <br/>
  */
 public class SipCallSession implements Parcelable {
+
+    private static final String TAG = SipCallSession.class.getSimpleName();
 
     /**
      * Describe the control state of a call <br/>
@@ -240,6 +243,7 @@ public class SipCallSession implements Parcelable {
      * @param in parcelable to build from
      */
     private SipCallSession(Parcel in) {
+        Log.i(TAG, "SipCallSession constructor from Parcel");
         initFromParcel(in);
     }
 
@@ -251,6 +255,7 @@ public class SipCallSession implements Parcelable {
      * call, <n>not to modify it</b>
      */
     public SipCallSession() {
+        Log.i(TAG, "empty SipCallSession constructor");
         // Nothing to do in default constructor
     }
 
@@ -259,6 +264,7 @@ public class SipCallSession implements Parcelable {
      * @param callInfo
      */
     public SipCallSession(SipCallSession callInfo) {
+        Log.i(TAG, "SipCallSession constructor");
          Parcel p = Parcel.obtain();
          callInfo.writeToParcel(p, 0);
          p.setDataPosition(0);
@@ -267,11 +273,13 @@ public class SipCallSession implements Parcelable {
     }
     
     private void initFromParcel(Parcel in) {
+        Log.i(TAG, "initFromParcel");
         primaryKey = in.readInt();
         callId = in.readInt();
         callState = in.readInt();
         mediaStatus = in.readInt();
         remoteContact = in.readString();
+        Log.d(TAG, "remoteContact: " + remoteContact);
         isIncoming = (in.readInt() == 1);
         confPort = in.readInt();
         accId = in.readInt();

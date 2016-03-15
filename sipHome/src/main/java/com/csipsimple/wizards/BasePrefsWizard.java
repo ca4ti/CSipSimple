@@ -34,6 +34,7 @@ import android.widget.Button;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.csipsimple.R;
+import com.csipsimple.api.SipConfigManager;
 import com.csipsimple.api.SipManager;
 import com.csipsimple.api.SipProfile;
 import com.csipsimple.db.DBProvider;
@@ -41,6 +42,7 @@ import com.csipsimple.models.Filter;
 import com.csipsimple.ui.filters.AccountFilters;
 import com.csipsimple.ui.prefs.GenericPrefs;
 import com.csipsimple.utils.Log;
+import com.csipsimple.utils.PreferencesProviderWrapper;
 import com.csipsimple.utils.PreferencesWrapper;
 import com.csipsimple.wizards.WizardUtils.WizardInfo;
 
@@ -283,15 +285,21 @@ public class BasePrefsWizard extends GenericPrefs {
 	 * @param wizardId the wizard to use for account entry
 	 */
 	private void saveAccount(String wizardId) {
+		Log.i(TAG, "saveAccount");
 		boolean needRestart = false;
 
 		PreferencesWrapper prefs = new PreferencesWrapper(getApplicationContext());
 		account = wizard.buildAccount(account);
+
+		//prefs.();
+
 		account.wizard = wizardId;
 		if (account.id == SipProfile.INVALID_ID) {
 			// This account does not exists yet
 		    prefs.startEditing();
 			wizard.setDefaultParams(prefs);
+			Log.d(TAG, "account display name:" + account.display_name);
+			prefs.setPreferenceStringValue(SipConfigManager.DEFAULT_CALLER_ID, account.display_name);
 			prefs.endEditing();
 			applyNewAccountDefault(account);
 			Uri uri = getContentResolver().insert(SipProfile.ACCOUNT_URI, account.getDbContentValues());
@@ -314,9 +322,13 @@ public class BasePrefsWizard extends GenericPrefs {
 			// option to re-apply default params
             prefs.startEditing();
 			wizard.setDefaultParams(prefs);
-            prefs.endEditing();
+			Log.d(TAG, "account display name:" + account.display_name);
+			prefs.setPreferenceStringValue(SipConfigManager.DEFAULT_CALLER_ID, account.display_name);
+			prefs.endEditing();
 			getContentResolver().update(ContentUris.withAppendedId(SipProfile.ACCOUNT_ID_URI_BASE, account.id), account.getDbContentValues(), null, null);
 		}
+
+		Log.d(TAG, "account saved");
 
 		// Mainly if global preferences were changed, we have to restart sip stack 
 		if (needRestart) {

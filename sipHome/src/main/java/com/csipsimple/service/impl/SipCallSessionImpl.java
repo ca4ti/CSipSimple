@@ -23,8 +23,11 @@ package com.csipsimple.service.impl;
 
 import com.csipsimple.api.SipCallSession;
 import com.csipsimple.api.SipProfile;
+import com.csipsimple.utils.Log;
 
 public class SipCallSessionImpl extends SipCallSession {
+
+    private static final String TAG = SipCallSessionImpl.class.getSimpleName();
 
     /**
      * Set the call id of this serializable holder
@@ -126,6 +129,7 @@ public class SipCallSessionImpl extends SipCallSession {
      * @see #getRemoteContact()
      */
     public void setRemoteContact(String remoteContact2) {
+        Log.i(TAG, "setRemoteContact");
         remoteContact = remoteContact2;
     }
 

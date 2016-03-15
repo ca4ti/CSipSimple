@@ -1,2 +1,2 @@
-include ':abs-github'
+include ':abs-github', ':csipsimple-example', ':csipsimple-apilib'
 include ':sipHome'

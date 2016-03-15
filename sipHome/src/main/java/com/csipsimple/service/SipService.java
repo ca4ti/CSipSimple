@@ -100,7 +100,7 @@ public class SipService extends Service {
 	private SipWakeLock sipWakeLock;
 	private boolean autoAcceptCurrent = false;
 	public boolean supportMultipleCalls = false;
-	
+
 	// For video testing -- TODO : remove
 	private static SipService singleton = null;
 	

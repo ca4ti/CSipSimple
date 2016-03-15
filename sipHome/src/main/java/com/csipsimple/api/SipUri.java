@@ -25,6 +25,7 @@ package com.csipsimple.api;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +36,8 @@ import java.util.regex.Pattern;
  *
  */
 public final class SipUri {
+
+    private static final String TAG = SipUri.class.getSimpleName();
 
     private SipUri() {
         // Singleton
@@ -142,34 +145,52 @@ public final class SipUri {
      *         return the object with blank fields
      */
     public static ParsedSipContactInfos parseSipContact(String sipUri) {
+        Log.i(TAG, "parseSipContact : " + sipUri);
         ParsedSipContactInfos parsedInfos = new ParsedSipContactInfos();
 
         if (!TextUtils.isEmpty(sipUri)) {
             Matcher m = SIP_CONTACT_PATTERN.matcher(sipUri);
             if (m.matches()) {
+                Log.i(TAG, "matches SIP_CONTACT_PATTERN");
                 parsedInfos.displayName = Uri.decode(m.group(1).trim());
+                Log.i(TAG, "displayName: " + parsedInfos.displayName);
                 parsedInfos.domain = m.group(4);
+                Log.i(TAG, "domain: " + parsedInfos.domain);
                 parsedInfos.userName = Uri.decode(m.group(3));
+                Log.i(TAG, "userName: " + parsedInfos.userName);
                 parsedInfos.scheme = m.group(2);
+                Log.i(TAG, "scheme: " + parsedInfos.scheme);
             }else {
+                Log.d(TAG, "does not match SIP_CONTACT_PATTERN");
                 // Try to consider that as host
                 m = SIP_HOST_PATTERN.matcher(sipUri);
                 if(m.matches()) {
+                    Log.i(TAG, "matches SIP_HOST_PATTERN");
                     parsedInfos.displayName = Uri.decode(m.group(1).trim());
+                    Log.i(TAG, "displayName: " + parsedInfos.displayName);
                     parsedInfos.domain = m.group(3);
+                    Log.i(TAG, "domain: " + parsedInfos.domain);
                     parsedInfos.scheme = m.group(2);
+                    Log.i(TAG, "scheme: " + parsedInfos.scheme);
                 }else {
                     m = SIP_CONTACT_ADDRESS_PATTERN.matcher(sipUri);
                     if(m.matches()) {
+                        Log.i(TAG, "matches SIP_CONTACT_ADDRESS_PATTERN");
                         parsedInfos.userName = Uri.decode(m.group(1));
+                        Log.i(TAG, "userName: " + parsedInfos.userName);
                         parsedInfos.domain = m.group(2);
+                        Log.i(TAG, "domain: " + parsedInfos.domain);
                     }else {
+                        Log.d(TAG, "does not match anything, only username given");
                         // Final fallback, we have only a username given
                         parsedInfos.userName = sipUri;
+                        Log.i(TAG, "userName: " + parsedInfos.userName);
                     }
                 }
             }
         }
+
+        Log.d(TAG, "parsedInfos: " + parsedInfos.toString(true));
 
         return parsedInfos;
     }
@@ -182,6 +203,7 @@ public final class SipUri {
      * @return the simple display
      */
     public static String getDisplayedSimpleContact(CharSequence uri) {
+        Log.i(TAG, "getDisplayedSimpleContact: uri: " + uri);
         // Reformat number
         if (uri != null) {
             String remoteContact = uri.toString();

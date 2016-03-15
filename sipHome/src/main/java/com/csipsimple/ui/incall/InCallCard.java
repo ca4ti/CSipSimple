@@ -53,6 +53,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 */
 import com.csipsimple.R;
+import com.csipsimple.api.MakeCallService;
 import com.csipsimple.api.SipCallSession;
 import com.csipsimple.api.SipCallSession.MediaState;
 import com.csipsimple.api.SipConfigManager;
@@ -573,8 +574,17 @@ public class InCallCard extends FrameLayout implements OnClickListener {
 
     private void updateRemoteName() {
 
-        final String aRemoteUri = callInfo.getRemoteContact();
+        Log.i(TAG, "updateRemoteName");
+        String aRemoteUri = callInfo.getRemoteContact();
         Log.i(TAG, "remoteContact: " + aRemoteUri);
+        Log.i(TAG, "callInfo: " + callInfo.toString());
+
+        if(!TextUtils.isEmpty(MakeCallService.CALLEE_NAME)) {
+            aRemoteUri = MakeCallService.CALLEE_NAME + aRemoteUri;
+            Log.i(TAG, "remoteContact after manual concatenation: " + aRemoteUri);
+        } else {
+            Log.w(TAG, "callee name is not set manually!");
+        }
 
         // If not already set with the same value, just ignore it
         if (aRemoteUri != null && !aRemoteUri.equalsIgnoreCase(cachedRemoteUri)) {
