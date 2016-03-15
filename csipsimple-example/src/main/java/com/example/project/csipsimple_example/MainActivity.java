@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText number;
     private EditText name;
+    private EditText message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent();
                 intent.putExtra(ApiConstants.REQUEST_TYPE_INTENT_KEY, ApiConstants.REQUEST_TYPE_MAKE_CALL);
-                intent.putExtra(ApiConstants.TO_CALL_NUMBER_INTENT_KEY, num);
+                intent.putExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY, num);
                 intent.putExtra(ApiConstants.TO_CALL_NAME_INTENT_KEY, nam);
                 intent.setAction(ApiConstants.API_REQUEST_ACTION);
                 sendBroadcast(intent);
@@ -67,10 +68,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Sent account broadcast", Toast.LENGTH_SHORT).show();
             }
         });
+
+        FloatingActionButton fabMessage = (FloatingActionButton) findViewById(R.id.fab_message);
+        fabMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String mesg = message.getText().toString().trim();
+                String num = number.getText().toString().trim();
+                if(!TextUtils.isEmpty(mesg)) {
+                    Intent intent = new Intent();
+                    intent.putExtra(ApiConstants.REQUEST_TYPE_INTENT_KEY, ApiConstants.REQUEST_TYPE_SEND_MESSAGE);
+                    intent.setAction(ApiConstants.API_REQUEST_ACTION);
+                    intent.putExtra(ApiConstants.MESSAGE_INTENT_KEY, mesg);
+                    intent.putExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY, num);
+                    sendBroadcast(intent);
+                    Toast.makeText(getApplicationContext(), "Sending a message: " + mesg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initializeFields(){
         number = (EditText) findViewById(R.id.number);
         name = (EditText) findViewById(R.id.name);
+        message = (EditText) findViewById(R.id.message);
     }
 }
