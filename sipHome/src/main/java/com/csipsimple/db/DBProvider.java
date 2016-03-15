@@ -54,8 +54,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class DBProvider extends ContentProvider {
-	
-	private DatabaseHelper mOpenHelper;
+
+    private static final String TAG = DBProvider.class.getSimpleName();
+    private DatabaseHelper mOpenHelper;
 	private static final String UNKNOWN_URI_LOG = "Unknown URI ";
     
 	// Ids for matcher
@@ -384,6 +385,7 @@ public class DBProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues initialValues) {
+        Log.i(TAG, "insert");
 		int matched = URI_MATCHER.match(uri);
     	String matchedTable = null;
     	Uri baseInsertedUri = null;

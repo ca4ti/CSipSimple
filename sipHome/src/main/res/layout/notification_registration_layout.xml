@@ -72,7 +72,8 @@
             android:layout_toRightOf="@id/iconContainer1"
             android:ellipsize="end"
             android:paddingLeft="14dip"
-            android:textAppearance="@style/NotificationTitle" >
+            android:textAppearance="@style/NotificationTitle"
+            android:textColor="@color/black" >
         </TextView>
     </RelativeLayout>
     <!-- Unfortunately to be compatible with 1.6 devices, we need to write it as flat file -->
@@ -120,7 +121,8 @@
             android:layout_toRightOf="@id/iconContainer2"
             android:ellipsize="end"
             android:paddingLeft="14dip"
-            android:textAppearance="@style/NotificationTitle" >
+            android:textAppearance="@style/NotificationTitle"
+            android:textColor="@color/black">
         </TextView>
     </RelativeLayout>
     <!-- Unfortunately to be compatible with 1.6 devices, we need to write it as flat file -->
@@ -168,7 +170,8 @@
             android:layout_toRightOf="@id/iconContainer3"
             android:ellipsize="end"
             android:paddingLeft="14dip"
-            android:textAppearance="@style/NotificationTitle" >
+            android:textAppearance="@style/NotificationTitle"
+            android:textColor="@color/black" >
         </TextView>
     </RelativeLayout>
     <!-- TODO : add a more label -->

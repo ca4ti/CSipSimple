@@ -121,7 +121,13 @@ public interface IOnCallActionTrigger {
      * Stop the video stream
      */
     int ZRTP_REVOKE = ZRTP_TRUST + 1;
-    
+
+    /**
+     * Cancel call before it is connected
+     * (before the other party answered)
+     */
+    int CANCEL_CALL = ZRTP_REVOKE + 1;
+
     /**
      * Called when the user make an action
      * 

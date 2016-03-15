@@ -4,8 +4,9 @@ sipHome/build/
 abs-github/build/
 
 .idea/
-.iml
+*.iml
+csipsimple-apilib/csipsimple-apilib.iml
+sipHome/sipHome.iml
 
 # gradle and idea files and cache
 .gradle
-*.iml

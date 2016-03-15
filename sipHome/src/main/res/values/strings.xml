@@ -114,5 +114,6 @@
     <string name="uri_nbr">Phone number</string>
     <string name="uri_im">IM with custom SIP scheme</string>
     <string name="uri_sip">Internet call</string>
+    <string name="unknown_version">Unknown version</string>
 
 </resources>

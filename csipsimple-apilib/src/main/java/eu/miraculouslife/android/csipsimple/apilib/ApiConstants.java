@@ -18,9 +18,14 @@ public class ApiConstants {
     public static final String API_RESPONSE_BROADCAST_ACTION = "csipsimple.broadcast.action.api_response";
     public static final String API_RESPONSE_TYPE_INTENT_KEY = "csipsimple.api.responsetype.intent_key";
     public static final int API_RESPONSE_TYPE_CALL_ENDED = 201;
-    public static final String CALL_ENDED_STATUS_INTENT_KEY = "call.ended.status.intent_key";
-    public static final int API_RESPONSE_TYPE_INSTALLATION_CHECK = 202;
-    public static final int API_RESPONSE_TYPE_CALL_CONNECTED = 203;
+    public static final int API_RESPONSE_TYPE_CALL_CANCELLED = 202;
+    public static final int API_RESPONSE_TYPE_INSTALLATION_CHECK = 210;
+    public static final int API_RESPONSE_TYPE_CALL_CONNECTED = 220;
     public static final String IS_CALL_INCOMING_INTENT_KEY = "calltype.isincoming.intent.key";
     public static final String CALL_CONNECTED_CALLEE_INTENT_KEY = "call.connected.callee_name.intent.key";
+
+    public static final int REQUEST_TYPE_VERSION_REQUEST = 105;
+    public static final int API_RESPONSE_TYPE_CSIPSIMPLE_VERSION = 230;
+    public static final String CSIPIMPLE_VERSION_INTENT_KEY = "csipsimple.api.responsetype.csipsimple_version";
+    public static final String APPNAME = "ML SIP client";
 }

@@ -222,6 +222,7 @@ public class SipNotifications {
 
 	// Register
 	public synchronized void notifyRegisteredAccounts(ArrayList<SipProfileState> activeAccountsInfos, boolean showNumbers) {
+		Log.i(TAG, "notifyRegisteredAccounts");
 		if (!isServiceWrapper) {
 			Log.e(THIS_FILE, "Trying to create a service notification from outside the service");
 			return;
@@ -242,6 +243,7 @@ public class SipNotifications {
 		RegistrationNotification contentView = new RegistrationNotification(context.getPackageName());
 		contentView.clearRegistrations();
 		if(!Compatibility.isCompatible(9)) {
+			Log.w(TAG, "is not compatible with 9");
 		    contentView.setTextsColor(notificationPrimaryTextColor);
 		}
 		contentView.addAccountInfos(context, activeAccountsInfos);
@@ -290,6 +292,7 @@ public class SipNotifications {
 	 * @return
 	 */
 	private String formatNotificationTitle(int title, long accId) {
+		Log.i(TAG, "formatNotificationTitle");
         StringBuilder notifTitle = new StringBuilder(context.getText(title));
         SipProfile acc = SipProfile.getProfileFromDbId(context, accId,
                 new String[] {SipProfile.FIELD_DISPLAY_NAME});
@@ -297,7 +300,7 @@ public class SipNotifications {
             notifTitle.append(" - ");
             notifTitle.append(acc.display_name);
         }
-        return notifTitle.toString();
+        return notifTitle.toString() + "Title";
 	}
 
 	// Calls

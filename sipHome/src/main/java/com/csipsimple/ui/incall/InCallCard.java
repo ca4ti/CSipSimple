@@ -840,10 +840,18 @@ public class InCallCard extends FrameLayout implements OnClickListener {
 
     @Override
     public void onClick(View v) {
+        Log.i(TAG, "end call via button");
         int id = v.getId();
         if (id == R.id.endButton) {
-            if (callInfo.isBeforeConfirmed() && callInfo.isIncoming()) {
-                dispatchTriggerEvent(IOnCallActionTrigger.REJECT_CALL);
+            if (callInfo.isBeforeConfirmed()) {
+                Log.i(TAG, "call not confirmed yet (isBeforeConfirmed)");
+                if(callInfo.isIncoming()) {
+                    Log.i(TAG, "call is incoming, reject call");
+                    dispatchTriggerEvent(IOnCallActionTrigger.REJECT_CALL);
+                } else {
+                    Log.i(TAG, "call is outgoing, cancel call");
+                    dispatchTriggerEvent(IOnCallActionTrigger.CANCEL_CALL);
+                }
             } else if (!callInfo.isAfterEnded()) {
                 dispatchTriggerEvent(IOnCallActionTrigger.TERMINATE_CALL);
             }

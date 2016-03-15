@@ -140,6 +140,7 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
     private String targetName = "";
 
+    private boolean callEnded;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -593,13 +594,31 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
     }
 
     private void sendEndCallBroadcast(){
-        Log.i(TAG, "sendEndCallBroadcast");
-        MakeCallService.CALLEE_NAME = "";
-        Intent intent = new Intent();
-        intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_ENDED);
-        intent.putExtra(ApiConstants.CALL_ENDED_STATUS_INTENT_KEY, true);
-        intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
-        sendBroadcast(intent);
+        if(!callEnded) {
+            Log.i(TAG, "sendEndCallBroadcast");
+            MakeCallService.CALLEE_NAME = "";
+            Intent intent = new Intent();
+            intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_ENDED);
+            intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
+            sendBroadcast(intent);
+            callEnded = true;
+        } else {
+            Log.i(TAG, "call already ended, not sending end call broadcast");
+        }
+    }
+
+    private void sendCancelCallBroadcast(){
+        if(!callEnded) {
+            Log.i(TAG, "sendCancelCallBroadcast");
+            MakeCallService.CALLEE_NAME = "";
+            Intent intent = new Intent();
+            intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_CANCELLED);
+            intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
+            sendBroadcast(intent);
+            callEnded = true;
+        } else {
+            Log.i(TAG, "call already ended, not sending cancel call broadcast");
+        }
     }
 
     @Override
@@ -935,11 +954,24 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                     break;
                 }
                 case REJECT_CALL:
-                case TERMINATE_CALL: {
                     if (service != null) {
                         Log.i(TAG, "Rejecting the call");
                         service.hangup(call.getCallId(), 0);
                     }
+                    break;
+                case TERMINATE_CALL: {
+                    if (service != null) {
+                        Log.i(TAG, "Terminating the call");
+                        service.hangup(call.getCallId(), 0);
+                    }
+                    break;
+                }
+                case CANCEL_CALL: {
+                    if (service != null) {
+                        Log.i(TAG, "Cancelling the call");
+                        service.hangup(call.getCallId(), 0);
+                    }
+                    sendCancelCallBroadcast();
                     break;
                 }
                 case MUTE_ON:

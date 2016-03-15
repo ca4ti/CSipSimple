@@ -24,6 +24,7 @@ package com.csipsimple.widgets;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -53,6 +54,8 @@ public class RegistrationNotification extends RemoteViews {
             R.id.account_label2,
             R.id.account_label3,
     };
+
+    private static final String TAG = RegistrationNotification.class.getSimpleName();
 
     public RegistrationNotification(String aPackageName) {
         super(aPackageName, R.layout.notification_registration_layout);
@@ -87,6 +90,7 @@ public class RegistrationNotification extends RemoteViews {
      *            notification view
      */
     public void addAccountInfos(Context context, ArrayList<SipProfileState> activeAccountsInfos) {
+        Log.i(TAG, "addAccountInfos");
         int i = 0;
         for (SipProfileState accountInfo : activeAccountsInfos) {
             // Clamp to max possible notifications in remote view
@@ -95,7 +99,7 @@ public class RegistrationNotification extends RemoteViews {
                 WizardInfo wizardInfos = WizardUtils.getWizardClass(accountInfo.getWizard());
                 if (wizardInfos != null) {
                     CharSequence dName = accountInfo.getDisplayName();
-
+                    Log.d(TAG, "Setting display name: " + dName);
                     setImageViewResource(icons[i], wizardInfos.icon);
                     if (!TextUtils.isEmpty(dName)) {
                         setTextViewText(texts[i], dName);
@@ -110,6 +114,7 @@ public class RegistrationNotification extends RemoteViews {
     }
     
     public void setTextsColor(Integer color) {
+        Log.i(TAG, "setTextsColor");
         if(color == null) {
             return;
         }
