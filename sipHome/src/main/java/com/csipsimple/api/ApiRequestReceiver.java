@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.csipsimple.ui.account.AccountsEditList;
-
 import eu.miraculouslife.android.csipsimple.apilib.ApiConstants;
 
 /**
@@ -38,8 +37,13 @@ public class ApiRequestReceiver extends BroadcastReceiver {
             Intent serviceIntent = new Intent(Intent.ACTION_SYNC, null, context, SendMessageService.class);
             serviceIntent.putExtras(intent);
             context.startService(serviceIntent);
+        } else if(requestType == ApiConstants.REQUEST_TYPE_INSTALLATION_CHECK){
+            Log.i(TAG, "received request for checking installation");
+            Intent intent1 = new Intent(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
+            intent1.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_INSTALLATION_CHECK);
+            context.sendBroadcast(intent1);
         } else {
-            Log.e(TAG, "Unknown requestType: " + " . Make sure the request type is correct.");
+            Log.e(TAG, "Unknown requestType: " + requestType + " . Make sure the request type is correct.");
         }
     }
 }

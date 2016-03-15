@@ -58,5 +58,14 @@
             app:backgroundTint="@color/green"
             android:src="@android:drawable/ic_menu_send" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_installation_check"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/material_grey"
+            android:src="@android:drawable/ic_dialog_info" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

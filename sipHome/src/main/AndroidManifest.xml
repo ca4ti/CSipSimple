@@ -427,7 +427,7 @@
         </activity-alias>
 
         <!-- To be able to do video, this has to be launched in sipStack process -->
-        <activity
+        <!--activity
             android:name="com.csipsimple.ui.incall.InCallActivity"
             android:allowTaskReparenting="true"
             android:configChanges="orientation"
@@ -442,7 +442,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity-->
         <activity
             android:name="com.csipsimple.ui.PickupSipUri"
             android:configChanges="orientation"
@@ -573,7 +573,7 @@
                 <action android:name="csipsimple.broadcast.action.incoming_call" />
             </intent-filter>
         </receiver>
-        <activity
+        <!--activity
             android:name=".ui.incall.CallActivityWithFragment"
             android:label="Call Activity"
             android:theme="@style/AppTheme.Holo.Dialog"
@@ -588,7 +588,7 @@
                 <action android:name="com.csipsimple.phone.action.INCALL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity-->
         <activity
             android:name=".ui.incall.CallActivity"
             android:label="Call Activity"
