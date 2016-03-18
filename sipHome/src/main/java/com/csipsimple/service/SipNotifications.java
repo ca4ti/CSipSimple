@@ -300,7 +300,7 @@ public class SipNotifications {
             notifTitle.append(" - ");
             notifTitle.append(acc.display_name);
         }
-        return notifTitle.toString() + "Title";
+        return notifTitle.toString();
 	}
 
 	// Calls
