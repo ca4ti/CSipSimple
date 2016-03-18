@@ -421,7 +421,7 @@
         </activity-alias>
 
         <!-- To be able to do video, this has to be launched in sipStack process -->
-        <!--activity
+        <!--activity--
             android:name="com.csipsimple.ui.incall.InCallActivity"
             android:allowTaskReparenting="true"
             android:configChanges="orientation"
@@ -559,7 +559,6 @@
             android:name="com.csipsimple.wizards.impl.MondotalkCreate"
             android:theme="@style/DarkTheme" />
 
-
         <receiver
             android:name="com.csipsimple.ui.incall.IncomingCallReceiver"
             android:exported="true" >
@@ -571,8 +570,7 @@
         <activity
             android:name=".ui.incall.CallActivity"
             android:label="Call Activity"
-            android:theme="@style/AppTheme.Holo.Dialog"
-            android:screenOrientation="landscape"
+            android:theme="@style/CallUITheme"
 
             android:allowTaskReparenting="true"
             android:configChanges="orientation"

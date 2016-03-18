@@ -23,7 +23,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainFrame"
-    android:layout_width="600dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
     <ViewStub
@@ -35,12 +35,13 @@
     <LinearLayout
         android:id="@+id/inCallContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="0dp"
+            android:layout_weight="10"
             android:orientation="horizontal" >
 
             <!--
@@ -76,7 +77,8 @@
         <com.csipsimple.ui.incall.locker.InCallAnswerControls
             android:id="@+id/inCallAnswerControls"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="3"
             android:visibility="invisible" />
 
         <!-- Wraps split action bar manually managed -->
