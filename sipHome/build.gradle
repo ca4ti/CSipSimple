@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 3003
-        versionName '2.0.2'
+        versionCode 3005
+        versionName '2.0.3'
         applicationId "com.csipsimple"
         archivesBaseName = "CSipSimple-$versionName"
     }
