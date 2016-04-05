@@ -28,4 +28,5 @@ public class ApiConstants {
     public static final int API_RESPONSE_TYPE_CSIPSIMPLE_VERSION = 230;
     public static final String CSIPIMPLE_VERSION_INTENT_KEY = "csipsimple.api.responsetype.csipsimple_version";
     public static final String APPNAME = "ML SIP client";
+    public static final int API_RESPONSE_TYPE_STARTING_CALL = 301;
 }
