@@ -89,7 +89,7 @@ import eu.miraculouslife.android.csipsimple.apilib.ApiConstants;
 
 public class CallActivity extends FragmentActivity implements IOnCallActionTrigger,
         IOnLeftRightChoice, ProximityDirector, OnDtmfListener {
-    private static final int QUIT_DELAY = 3000;
+    private static final int QUIT_DELAY = 1000;
     private final static String TAG = CallActivity.class.getSimpleName();
     //private final static int DRAGGING_DELAY = 150;
 
@@ -141,6 +141,7 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
     private String targetName = "";
 
     private boolean callEnded;
+    private boolean callConnectedBroadcastSent;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -557,18 +558,24 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                         Log.i(TAG, "SipCallSession.InvState.CONFIRMED - (Call connected)");
                         Log.i(TAG, "remoteContact: " + mainCallInfo.getRemoteContact());
                         Log.w(TAG, "is incoming: " + mainCallInfo.isIncoming());
+                        Log.i(TAG, "call info: " + mainCallInfo.toString());
+                        Log.i(TAG, "getCallStart: " + mainCallInfo.getCallStart());
+                        Log.i(TAG, "getConnectStart: " + mainCallInfo.getConnectStart());
+
+                        Toast.makeText(CallActivity.this, "Call connected", Toast.LENGTH_SHORT).show();
                         sendCallConnectedBroadcast(mainCallInfo.isIncoming(), mainCallInfo.getRemoteContact());
 
                         break;
                     case SipCallSession.InvState.NULL:
                     case SipCallSession.InvState.DISCONNECTED:
                         Log.d(TAG, "Active call session is disconnected or null wait for quit...");
+                        Log.i(TAG, "Set call as ended");
 
+                        sendEndCallBroadcast();
                         // This will release locks
                         onDisplayVideo(false);
                         delayedQuit();
                         return;
-
                 }
 
                 Log.d(TAG, "we leave the update ui function");
@@ -584,13 +591,18 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
     private void sendCallConnectedBroadcast(boolean isIncoming, String calleeContact){
         Log.i(TAG, "sendCallConnectedBroadcast");
+
         MakeCallService.CALLEE_NAME = "";
         Intent intent = new Intent();
         intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_CALL_CONNECTED);
         intent.putExtra(ApiConstants.IS_CALL_INCOMING_INTENT_KEY, isIncoming);
         intent.putExtra(ApiConstants.CALL_CONNECTED_CALLEE_INTENT_KEY, calleeContact);
         intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
-        sendBroadcast(intent);
+        Timer timer = new Timer();
+
+        // wait for two seconds, then check if the call is still active
+        // otherwise, we consider it as not connected
+        timer.schedule(new SendConnectedTask(intent), 2000);
     }
 
     private void sendEndCallBroadcast(){
@@ -1164,220 +1176,6 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
     }
 
-    /*
-    // Drag and drop feature
-    private Timer draggingTimer;
-
-    public class OnBadgeTouchListener implements OnTouchListener {
-        private SipCallSession call;
-        private InCallCard badge;
-        private boolean isDragging = false;
-        private SetDraggingTimerTask draggingDelayTask;
-        Vibrator vibrator;
-        int beginX = 0;
-        int beginY = 0;
-
-        private class SetDraggingTimerTask extends TimerTask {
-            @Override
-            public void run() {
-                vibrator.vibrate(50);
-                setDragging(true);
-                Log.d(TAG, "Begin dragging");
-            }
-        };
-
-        public OnBadgeTouchListener(InCallCard aBadge, SipCallSession aCall) {
-            call = aCall;
-            badge = aBadge;
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            // TODO : move somewhere else
-            if (draggingTimer == null) {
-                draggingTimer = new Timer("Dragging-timer");
-            }
-        }
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            int action = event.getAction();
-            int X = (int) event.getRawX();
-            int Y = (int) event.getRawY();
-
-            // Reset the not proximity sensor lock overlay
-            proximityManager.restartTimer();
-
-
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    if (draggingDelayTask != null) {
-                        draggingDelayTask.cancel();
-                    }
-                    draggingDelayTask = new SetDraggingTimerTask();
-                    beginX = X;
-                    beginY = Y;
-                    draggingTimer.schedule(draggingDelayTask, DRAGGING_DELAY);
-                case MotionEvent.ACTION_MOVE:
-                    if (isDragging) {
-                        float size = Math.max(75.0f, event.getSize() + 50.0f);
-
-                        Rect wrap = new Rect(
-                                (int) (X - (size)),
-                                (int) (Y - (size)),
-                                (int) (X + (size / 2.0f)),
-                                (int) (Y + (size / 2.0f)));
-
-                        badge.bringToFront();
-                        // Log.d(TAG, "Is moving to "+X+", "+Y);
-                        return true;
-                    } else {
-                        if (Math.abs(X - beginX) > 50 || Math.abs(Y - beginY) > 50) {
-                            Log.d(TAG, "Stop dragging");
-                            stopDragging();
-                            return true;
-                        }
-                        return false;
-                    }
-
-                case MotionEvent.ACTION_UP:
-                    onDropBadge(X, Y, badge, call);
-                    stopDragging();
-                    return true;
-                    // Yes we continue cause this is a stop action
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_OUTSIDE:
-                    Log.d(TAG, "Stop dragging");
-                    stopDragging();
-                    return false;
-            }
-            return false;
-        }
-
-        private void stopDragging() {
-            // TODO : thread save it
-            if (draggingDelayTask != null) {
-                draggingDelayTask.cancel();
-            }
-            setDragging(false);
-        }
-
-        private void setDragging(boolean dragging) {
-            isDragging = dragging;
-            DraggingInfo di = new DraggingInfo(isDragging,
-                    badge, call);
-            runOnUiThread(new UpdateDraggingRunnable(di));
-        }
-
-
-        public void setCallState(SipCallSession callInfo) {
-            Log.d(TAG,
-                    "Updated call infos : " + call.getCallState() + " and " + call.getMediaStatus()
-                            + " et " + call.isLocalHeld());
-            call = callInfo;
-        }
-    }
-
-    private Rect getViewRect(int id) {
-        View v = findViewById(id);
-        if(v != null && v.getVisibility() == View.VISIBLE) {
-            return new Rect(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
-        }
-        return null;
-    }
-
-    private void onDropBadge(int X, int Y, InCallCard badge, SipCallSession call) {
-        Log.d(TAG, "Dropping !!! in " + X + ", " + Y);
-
-        // Rectangle init if not already done
-        if (endCallTargetRect == null) {
-            endCallTargetRect = getViewRect(R.id.dropHangup);
-        }
-        if (holdTargetRect == null) {
-            holdTargetRect = getViewRect(R.id.dropHold);
-        }
-        if (answerTargetRect == null) {
-            answerTargetRect = getViewRect(R.id.dropAnswer);
-        }
-        if (xferTargetRect == null) {
-            xferTargetRect = getViewRect(R.id.dropXfer);
-        }
-
-        // Rectangle matching
-
-        if (endCallTargetRect != null && endCallTargetRect.contains(X, Y)) {
-            // Drop in end call zone
-            onTrigger(call.isIncoming() && call.isBeforeConfirmed() ? DECLINE_CALL : CLEAR_CALL,
-                    call);
-        } else if (holdTargetRect != null && holdTargetRect.contains(X, Y)) {
-            // check if not drop on held call
-            boolean dropOnOtherCall = false;
-
-            for (Entry<Integer, InCallInfo> badgeSet : badges.entrySet()) {
-                Log.d(TAG, "On drop target searching for another badge");
-                int callId = badgeSet.getKey();
-                if (callId != call.getCallId()) {
-                    Log.d(TAG, "found a different badge than self");
-                    SipCallSession callInfo = getCallInfo(callId);
-                    if (callInfo.isLocalHeld()) {
-                        Log.d(TAG, "Other badge is hold");
-                        InCallInfo otherBadge = badgeSet.getValue();
-                        Rect r = new Rect(otherBadge.getLeft(), otherBadge.getTop(),
-                                otherBadge.getRight(), otherBadge.getBottom());
-                        Log.d(TAG, "Current X, Y " + X + ", " + Y + " -- " + r.top + ", "
-                                + r.left + ", " + r.right + ", " + r.bottom);
-                        if (r.contains(X, Y)) {
-                            Log.d(TAG, "Yep we've got one");
-                            dropOnOtherCall = true;
-                            if (service != null) {
-                                try {
-                                    // 1 = PJSUA_XFER_NO_REQUIRE_REPLACES
-                                    service.xferReplace(call.getCallId(), callId, 1);
-                                } catch (RemoteException e) {
-                                    // TODO : toaster
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            // Drop in hold zone
-
-            if (!dropOnOtherCall && !call.isLocalHeld()) {
-                onTrigger(TOGGLE_HOLD, call);
-            }
-        } else if (answerTargetRect != null && answerTargetRect.contains(X, Y)) {
-            if (call.isIncoming() && call.isBeforeConfirmed()) {
-                onTrigger(TAKE_CALL, call);
-            }
-        } else if (xferTargetRect != null && xferTargetRect.contains(X, Y)) {
-            if (!call.isBeforeConfirmed() && !call.isAfterEnded()) {
-                onTrigger(XFER_CALL, call);
-            }
-
-        } else {
-            Log.d(TAG, "Drop is done somewhere else " + call.getMediaStatus());
-            // Drop somewhere else
-            if (call.isLocalHeld()) {
-                Log.d(TAG, "Try to unhold");
-                onTrigger(TOGGLE_HOLD, call);
-            }
-        }
-        runOnUiThread(new UpdateUIFromMediaRunnable());
-    }
-
-    private class DraggingInfo {
-        public boolean isDragging = false;
-        // public InCallInfo2 badge;
-        public SipCallSession call;
-
-        public DraggingInfo(boolean aIsDragging, InCallCard aBadge, SipCallSession aCall) {
-            isDragging = aIsDragging;
-            // badge = aBadge;
-            call = aCall;
-        }
-    }
-    */
-
     private class ShowZRTPInfoRunnable implements Runnable, DialogInterface.OnClickListener {
         private String sasString;
         private SipCallSession callSession;
@@ -1611,9 +1409,30 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
             return convertView;
         }
-        
     }
 
-
-
+    class SendConnectedTask extends TimerTask {
+        private Intent intent;
+        public SendConnectedTask(Intent intent){
+            this.intent = intent;
+        }
+        public void run() {
+            try {
+                Log.d(TAG, "Time's up!");
+                if(!callConnectedBroadcastSent) {
+                    if (!callEnded) {
+                        Log.d(TAG, "call is still active, sending broadcast");
+                        sendBroadcast(intent);
+                    } else {
+                        Log.i(TAG, "call is not active any more, cancelling broadcast");
+                    }
+                    callConnectedBroadcastSent = true;
+                } else {
+                    Log.i(TAG, "call end broadcast already sent, dismissing this one");
+                }
+            } catch (Exception e){
+                Log.e(TAG, "Exception while executing SendConnectedTask", e);
+            }
+        }
+    }
 }
