@@ -55,11 +55,19 @@ export under the License Exception ENC Technology Software Unrestricted (TSU)
 exception (see the BIS Export Administration Regulations, Section 740.13) 
 for both object code and source code.
 
+#### Important
+It is important to note that this fork is used for a EU project and most of 
+the new features are developed based on the needs for this project. Especially
+using Broadcast events to communicate with the client app (see csipsimple-example 
+app).
 
 #### Differences from parent repository (https://github.com/r3gis3r/CSipSimple):
  - Gradle build
+ - Uses already build native libraries (.so files) from nightly builds
  - Use Broadcast to start calling activity
+ - Use Broadcast to send messages
+ - Use Broadcast to update an existing account or add a new one
  - Updated design in calling activity
  - Added client app: Standalone app that uses features of CSipSimple using
    broadcast receiver. Currently available features: sending messages, making 
-   calls, retrieving CSipSimple version info.
+   calls, retrieving CSipSimple version info, updating existing account
