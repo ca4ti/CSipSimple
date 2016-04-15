@@ -43,7 +43,7 @@ public class SendMessageService extends IntentService {
         Log.d(TAG, "onHandleIntent");
 
         message = intent.getStringExtra(ApiConstants.MESSAGE_INTENT_KEY);
-        number = intent.getStringExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY);
+        number = intent.getStringExtra(ApiConstants.CONTACT_NUMBER_INTENT_KEY);
         if(TextUtils.isEmpty(message)){
             Log.e(TAG, "Message body empty! Not sending anything.");
             return;
@@ -57,7 +57,7 @@ public class SendMessageService extends IntentService {
         Log.i(TAG, "sending message: " + message);
         Log.i(TAG, "to number: " + number);
 
-        number = intent.getStringExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY);
+        number = intent.getStringExtra(ApiConstants.CONTACT_NUMBER_INTENT_KEY);
 
             try {
                 bindSipService();

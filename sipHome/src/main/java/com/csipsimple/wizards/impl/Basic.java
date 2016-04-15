@@ -111,7 +111,7 @@ public class Basic extends BaseImplementation {
 
 		String[] serverParts = etAccountServer.getText().split(":");
 		account.acc_id = "<sip:" + SipUri.encodeUser(etAccountUserName.getText().trim()) + "@"+serverParts[0].trim()+">";
-		
+		Log.d(TAG, "acc_id: " + account.acc_id);
 		String regUri = "sip:" + etAccountServer.getText();
 		account.reg_uri = regUri;
 		account.proxies = new String[] { regUri } ;

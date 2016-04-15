@@ -67,5 +67,15 @@
             android:layout_margin="@dimen/fab_margin"
             app:backgroundTint="@color/material_grey"
             android:src="@android:drawable/ic_dialog_info" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_update_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/material_grey"
+            android:src="@android:drawable/ic_menu_upload" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
