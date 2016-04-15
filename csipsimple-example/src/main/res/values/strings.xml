@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">CallRequestProject</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_update_registration">UpdateRegistrationActivity</string>
+    <string name="display_name">Display name</string>
+    <string name="update_registration">Update registration</string>
+    <string name="username">username</string>
+    <string name="domain">domain</string>
+    <string name="pass">password</string>
 </resources>

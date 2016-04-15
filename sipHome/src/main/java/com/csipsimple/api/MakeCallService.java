@@ -42,9 +42,9 @@ public class MakeCallService extends IntentService {
 
         Log.d(TAG, "onHandleIntent");
 
-        CALLEE_NAME = intent.getStringExtra(ApiConstants.TO_CALL_NAME_INTENT_KEY);
+        CALLEE_NAME = intent.getStringExtra(ApiConstants.CONTACT_NAME_INTENT_KEY);
         Log.i(TAG, "calleeName: " + CALLEE_NAME);
-        number = intent.getStringExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY);
+        number = intent.getStringExtra(ApiConstants.CONTACT_NUMBER_INTENT_KEY);
 
         if (!TextUtils.isEmpty(number)) {
             try {

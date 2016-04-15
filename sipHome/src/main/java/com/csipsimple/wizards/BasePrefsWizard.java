@@ -291,10 +291,9 @@ public class BasePrefsWizard extends GenericPrefs {
 		PreferencesWrapper prefs = new PreferencesWrapper(getApplicationContext());
 		account = wizard.buildAccount(account);
 
-		//prefs.();
-
 		account.wizard = wizardId;
 		if (account.id == SipProfile.INVALID_ID) {
+			Log.d(TAG, "invalid ID");
 			// This account does not exists yet
 		    prefs.startEditing();
 			wizard.setDefaultParams(prefs);
@@ -302,6 +301,7 @@ public class BasePrefsWizard extends GenericPrefs {
 			prefs.setPreferenceStringValue(SipConfigManager.DEFAULT_CALLER_ID, account.display_name);
 			prefs.endEditing();
 			applyNewAccountDefault(account);
+			Log.d(TAG, "account getDbContentValues: " + account.getDbContentValues());
 			Uri uri = getContentResolver().insert(SipProfile.ACCOUNT_URI, account.getDbContentValues());
 			
 			// After insert, add filters for this wizard 
@@ -318,6 +318,7 @@ public class BasePrefsWizard extends GenericPrefs {
 			needRestart = wizard.needRestart();
 
 		} else {
+			Log.d(TAG, "valid ID");
 			// TODO : should not be done there but if not we should add an
 			// option to re-apply default params
             prefs.startEditing();

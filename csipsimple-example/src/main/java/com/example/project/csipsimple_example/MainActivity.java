@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent();
                 intent.putExtra(ApiConstants.REQUEST_TYPE_INTENT_KEY, ApiConstants.REQUEST_TYPE_MAKE_CALL);
-                intent.putExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY, num);
-                intent.putExtra(ApiConstants.TO_CALL_NAME_INTENT_KEY, nam);
+                intent.putExtra(ApiConstants.CONTACT_NUMBER_INTENT_KEY, num);
+                intent.putExtra(ApiConstants.CONTACT_NAME_INTENT_KEY, nam);
                 intent.setAction(ApiConstants.API_REQUEST_ACTION);
                 sendBroadcast(intent);
                 Toast.makeText(getApplicationContext(), "Sent broadcast", Toast.LENGTH_SHORT).show();
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(ApiConstants.REQUEST_TYPE_INTENT_KEY, ApiConstants.REQUEST_TYPE_SEND_MESSAGE);
                     intent.setAction(ApiConstants.API_REQUEST_ACTION);
                     intent.putExtra(ApiConstants.MESSAGE_INTENT_KEY, mesg);
-                    intent.putExtra(ApiConstants.TARGET_NUMBER_INTENT_KEY, num);
+                    intent.putExtra(ApiConstants.CONTACT_NUMBER_INTENT_KEY, num);
                     sendBroadcast(intent);
                 }
             }
@@ -104,6 +104,15 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "putting request type: " + ApiConstants.REQUEST_TYPE_INSTALLATION_CHECK);
                 intent.putExtra(ApiConstants.REQUEST_TYPE_INTENT_KEY, ApiConstants.REQUEST_TYPE_INSTALLATION_CHECK);
                 sendBroadcast(intent);
+            }
+        });
+
+        FloatingActionButton fabUpdateRegistration = (FloatingActionButton) findViewById(R.id.fab_update_registration);
+        fabUpdateRegistration.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), UpdateRegistrationActivity.class));
             }
         });
     }
