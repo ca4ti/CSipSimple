@@ -140,8 +140,9 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
     private String targetName = "";
 
-    private boolean callEnded;
-    private boolean callConnectedBroadcastSent;
+    private boolean callEnded = false;
+    private boolean callConnectedBroadcastSent = false;
+    private boolean callIncomingSent = false;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -289,6 +290,10 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         sendEndCallBroadcast();
+
+        callEnded = false;
+        callConnectedBroadcastSent = false;
+        callIncomingSent = false;
 
         if(infoDialog != null) {
             infoDialog.dismiss();
@@ -545,17 +550,35 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
                 // We manage wake lock
                 switch (state) {
                     case SipCallSession.InvState.INCOMING:
+                        Log.i(TAG, "SipCallSession.InvState.INCOMING");
                     case SipCallSession.InvState.EARLY:
+                        Log.i(TAG, "SipCallSession.InvState.EARLY");
                     case SipCallSession.InvState.CALLING:
+                        Log.i(TAG, "SipCallSession.InvState.CALLING");
                     case SipCallSession.InvState.CONNECTING:
-
+                        Log.i(TAG, "SipCallSession.InvState.CONNECTING");
                         Log.d(TAG, "Acquire wake up lock");
                         if (wakeLock != null && !wakeLock.isHeld()) {
                             wakeLock.acquire();
                         }
+
+                        callEnded = false;
+
+                        /*
+                        If it is an incoming call, broadcast a message to inform the UI and the ML
+                        System about it.
+                         */
+                        if (mainCallInfo.isIncoming()) {
+                            sendIncomingCallBroadcast(mainCallInfo.getRemoteContact());
+                        }
+
                         break;
                     case SipCallSession.InvState.CONFIRMED:
                         Log.i(TAG, "SipCallSession.InvState.CONFIRMED - (Call connected)");
+
+
+                        callConnectedBroadcastSent = false;
+
                         Log.i(TAG, "remoteContact: " + mainCallInfo.getRemoteContact());
                         Log.w(TAG, "is incoming: " + mainCallInfo.isIncoming());
                         Log.i(TAG, "call info: " + mainCallInfo.toString());
@@ -567,10 +590,13 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
 
                         break;
                     case SipCallSession.InvState.NULL:
+                        Log.i(TAG, "SipCallSession.InvState.NULL");
                     case SipCallSession.InvState.DISCONNECTED:
+                        Log.i(TAG, "SipCallSession.InvState.DISCONNECTED");
                         Log.d(TAG, "Active call session is disconnected or null wait for quit...");
                         Log.i(TAG, "Set call as ended");
 
+                        callIncomingSent = false;
                         sendEndCallBroadcast();
                         // This will release locks
                         onDisplayVideo(false);
@@ -586,6 +612,20 @@ public class CallActivity extends FragmentActivity implements IOnCallActionTrigg
             if (heldsCalls + mainsCalls == 0) {
                 delayedQuit();
             }
+        }
+    }
+
+    private void sendIncomingCallBroadcast(String calleeContact){
+        Log.i(TAG, "sendIncomingCallBroadcast");
+        if (!callIncomingSent){
+            Intent intent = new Intent();
+            intent.putExtra(ApiConstants.API_RESPONSE_TYPE_INTENT_KEY, ApiConstants.API_RESPONSE_TYPE_INCOMING_CALL);
+            intent.putExtra(ApiConstants.CALL_INCOMING_CALLEE_INTENT_KEY, calleeContact);
+            intent.setAction(ApiConstants.API_RESPONSE_BROADCAST_ACTION);
+            sendBroadcast(intent);
+            callIncomingSent = true;
+        } else {
+            Log.i(TAG, "incoming call already sent, not sending incoming call broadcast");
         }
     }
 

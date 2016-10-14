@@ -23,9 +23,12 @@
 package com.csipsimple.ui.messages;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
@@ -335,30 +338,68 @@ public class MessageFragment extends SherlockListFragment implements LoaderManag
     
     // Context menu
     public static final int MENU_COPY = ContextMenu.FIRST;
+    public static final int MENU_DELETE_MESSAGE = 2;
+    public static final int UNIQUE_GROUP_ID = 1;
 
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-        menu.add(0, MENU_COPY, 0, R.string.copy_message_text);
+        menu.add(UNIQUE_GROUP_ID, MENU_COPY, 0, R.string.copy_message_text);
+        menu.add(UNIQUE_GROUP_ID, MENU_DELETE_MESSAGE, 0, R.string.delete_message);
     }
     
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Cursor c = (Cursor) mAdapter.getItem(info.position);
-        if (c != null) {
-            SipMessage msg = new SipMessage(c);
-            switch (item.getItemId()) {
-                case MENU_COPY: {
-                    clipboardManager.setText(msg.getDisplayName(), msg.getBody());
-                    break;
-                }
-                default:
-                    break;
-            }
 
+        if (item.getGroupId() == UNIQUE_GROUP_ID){
+            AdapterView.AdapterContextMenuInfo info =
+                    (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+            Cursor c = (Cursor) mAdapter.getItem(info.position);
+            if (c != null) {
+                SipMessage msg = new SipMessage(c);
+                switch (item.getItemId()) {
+                    case MENU_COPY: {
+                        clipboardManager.setText(msg.getDisplayName(), msg.getBody());
+                        break;
+                    }
+                    case MENU_DELETE_MESSAGE: {
+                        if (msg.getId() != null &&
+                                !msg.getId().isEmpty() &&
+                                Long.parseLong(msg.getId()) > 0){
+                            confirmDeleteMessage(Long.parseLong(msg.getId()));
+                        } else {
+                            Log.e(TAG, "Can't delete message with invalid message id: " + msg.getId());
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+
+            }
         }
+
         return super.onContextItemSelected(item);
+    }
+
+    private void confirmDeleteMessage(final long messageId) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.confirm_dialog_title)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(true)
+                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            Builder threadUriBuilder = SipMessage.MESSAGE_ID_URI_BASE.buildUpon();
+                            // threadUriBuilder.appendEncodedPath(messageId);
+                            ContentUris.appendId(threadUriBuilder, messageId);
+                            getActivity().getContentResolver().delete(threadUriBuilder.build(), null, null);
+                    }
+                })
+                .setNegativeButton(R.string.no, null)
+                .setMessage(R.string.confirm_delete_message)
+                .show();
     }
     
 }
