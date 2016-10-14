@@ -67,6 +67,7 @@ public class ConversationsListFragment extends CSSListFragment implements ViewPa
     // IDs of the context menu items for the list of conversations.
     public static final int MENU_DELETE               = 0;
     public static final int MENU_VIEW                 = 1;
+    public static final int UNIQUE_GROUP_ID = 0;
 	
     private boolean mDualPane;
 
@@ -231,8 +232,8 @@ public class ConversationsListFragment extends CSSListFragment implements ViewPa
         AdapterView.AdapterContextMenuInfo info =
             (AdapterView.AdapterContextMenuInfo) menuInfo;
         if (info.position > 0) {
-            menu.add(0, MENU_VIEW, 0, R.string.menu_view);
-            menu.add(0, MENU_DELETE, 0, R.string.menu_delete);
+            menu.add(UNIQUE_GROUP_ID, MENU_VIEW, 0, R.string.menu_view);
+            menu.add(UNIQUE_GROUP_ID, MENU_DELETE, 0, R.string.menu_delete);
         }
     }
     
@@ -240,25 +241,28 @@ public class ConversationsListFragment extends CSSListFragment implements ViewPa
     public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        
-        if (info.position > 0) {
-            ConversationListItemViews cri = (ConversationListItemViews) info.targetView.getTag();
-            
-            if(cri != null) {
-                switch (item.getItemId()) {
-                case MENU_DELETE: {
-                    confirmDeleteThread(cri.getRemoteNumber());
-                    break;
-                }
-                case MENU_VIEW: {
-                    viewDetails(info.position, cri);
-                    break;
-                }
-                default:
-                    break;
+
+        if (item.getGroupId() == UNIQUE_GROUP_ID){
+            if (info.position > 0) {
+                ConversationListItemViews cri = (ConversationListItemViews) info.targetView.getTag();
+
+                if(cri != null) {
+                    switch (item.getItemId()) {
+                        case MENU_DELETE: {
+                            confirmDeleteThread(cri.getRemoteNumber());
+                            break;
+                        }
+                        case MENU_VIEW: {
+                            viewDetails(info.position, cri);
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                 }
             }
         }
+
         return super.onContextItemSelected(item);
     }
     

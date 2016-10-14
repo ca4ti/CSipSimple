@@ -174,6 +174,11 @@ public class SipMessage {
      */
     public static final String SELF = "SELF";
 
+    /*
+     * Added by Emanuel Sandner 2016-10-10
+     * id to be able to delete a single message from a conversation
+     */
+    private String id;
     private String from;
     private String fullFrom;
     private String to;
@@ -228,6 +233,11 @@ public class SipMessage {
      */
     public ContentValues getContentValues() {
         ContentValues cv = new ContentValues();
+        /*
+         * Added by Emanuel Sandner 2016-10-10
+         * id to be able to delete a single message from a conversation
+         */
+        cv.put(FIELD_ID, id);
         cv.put(FIELD_FROM, from);
         cv.put(FIELD_TO, to);
         cv.put(FIELD_CONTACT, contact);
@@ -246,7 +256,19 @@ public class SipMessage {
         String tmp_s;
         Long tmp_l;
         Boolean tmp_b;
-        
+
+        /*
+         * Added by Emanuel Sandner 2016-10-10
+         * id to be able to delete a single message from a conversation
+         * add an underscore to the FIELD_ID value, since the return value from the db
+         * seems to be _id
+         */
+
+        tmp_s = args.getAsString("_" + FIELD_ID);
+        if(tmp_s != null) {
+            id = tmp_s;
+        }
+
         tmp_s = args.getAsString(FIELD_FROM);
         if(tmp_s != null) {
             from = tmp_s;
@@ -288,6 +310,15 @@ public class SipMessage {
         if(tmp_s != null) {
             fullFrom = tmp_s;
         }
+    }
+
+    /**
+     * Get the id of the message.
+     *
+     * @return the Id of the sip message
+     */
+    public String getId() {
+        return id;
     }
 
     /**
