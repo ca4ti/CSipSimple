@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 19
-        versionCode 3011
-        versionName '2.1.1'
+        versionCode 3014
+        versionName '2.1.4'
         applicationId "com.csipsimple"
         archivesBaseName = "CSipSimple-$versionName"
     }
@@ -40,6 +40,12 @@ android {
             flavorDimension "rebranded"
             applicationId "ait.ac.at.hbs.miraculouslife.sip"
             archivesBaseName = "MiraculousLife Dialer - $android.defaultConfig.versionName"
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/jni']
         }
     }
 }
